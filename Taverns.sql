@@ -1,6 +1,6 @@
 
 DROP TABLE IF EXISTS [Tavern, Location, Users, Roles, BasementRats, Inventory, SupplyItem, Received, Service, Status, Sales];
-
+/*git test*/
 
 CREATE TABLE [Tavern] (
 	ID INT IDENTITY(1, 1),
