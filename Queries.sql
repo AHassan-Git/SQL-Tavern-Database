@@ -1,3 +1,3 @@
 USE TavernsDatabase;
 GO
-SELECT * FROM UserClassLevel;
+SELECT * FROM Class;

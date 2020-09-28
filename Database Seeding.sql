@@ -25,8 +25,8 @@ VALUES ('Pounds', 'Bread'),('Pounds' , 'Meat'),('Ounces', 'strong ale'),('Ounces
 INSERT INTO Locations (Name)
 VALUES ('Prague'),('Rothenburg'),('Mont Saint Michel'),('Siena'),('Carcassone');
 
-INSERT INTO Users (Name, RoleID)
-VALUES ('Matt', 1),('Rose' , 2),('Kevin', 3),('Matt', 4),('Joe', 5),('Rose' , 2);
+INSERT INTO Users (Name, RoleID,UserClassLevelID,UserStatusID)
+VALUES ('Matt', 1,1,2),('Rose' , 2,2,2),('Kevin', 3,3,3),('Matt', 4,4,4),('Joe', 5,5,5);
 
 
 INSERT INTO Taverns (Name,LocationID,OwnerID,NumberOfFloors)
@@ -56,7 +56,14 @@ VALUES (1,1,3),(2,2,4),(3,3,3),(4,4,4),(5,5,3);
 
 
 
+/* Testing Constraints */
+/*
+INSERT INTO Taverns (Name,LocationID,OwnerID,NumberOfFloors)
+VALUES ('Tavern1',6,1,3);
 
+INSERT INTO TavernSupplies (TavernID,SupplyID,Amount)
+VALUES (1,22,3);
+*/
 
 
 

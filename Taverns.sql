@@ -19,12 +19,12 @@ ALTER TABLE
 CREATE TABLE "Users"(
     "ID" INT IDENTITY(1, 1) NOT NULL,
     "RoleID" INT NOT NULL,
-    "UserStatusID" INT NOT NULL,
+    "UserStatusID" INT,
     "UserClassLevelID" INT NOT NULL,
     "Name" VARCHAR(255) NOT NULL,
-    "Birthdays" DATE NOT NULL,
-    "Cakedays" DATE NOT NULL,
-    "Notes" VARCHAR(255) NOT NULL
+    "Birthdays" DATE,
+    "Cakedays" DATE,
+    "Notes" VARCHAR(255)
 );
 ALTER TABLE
     "Users" ADD CONSTRAINT "users_id_primary" PRIMARY KEY("ID");
@@ -43,7 +43,7 @@ ALTER TABLE
     "UserStatus" ADD CONSTRAINT "userstatus_id_primary" PRIMARY KEY("ID");
 CREATE TABLE "Class"(
     "ID" INT IDENTITY(1, 1) NOT NULL,
-    "Name" VARCHAR NOT NULL
+    "Name" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     "Class" ADD CONSTRAINT "class_id_primary" PRIMARY KEY("ID");
@@ -52,7 +52,7 @@ CREATE TABLE "TavernSupplies"(
     "TavernID" INT NOT NULL,
     "SupplyID" INT NOT NULL,
     "Amount" INT NOT NULL,
-    "Date" DATETIME NOT NULL
+    "Date" DATETIME
 );
 ALTER TABLE
     "TavernSupplies" ADD CONSTRAINT "tavernsupplies_id_primary" PRIMARY KEY("ID");
@@ -62,7 +62,7 @@ CREATE TABLE "TavernSuppliesReceived"(
     "SupplyID" INT NOT NULL,
     "Cost" INT NOT NULL,
     "Amount" INT NOT NULL,
-    "DateUpdated" DATETIME NOT NULL
+    "DateUpdated" DATETIME
 );
 ALTER TABLE
     "TavernSuppliesReceived" ADD CONSTRAINT "tavernsuppliesreceived_id_primary" PRIMARY KEY("ID");
@@ -85,7 +85,7 @@ CREATE TABLE "Sales"(
     "ID" INT IDENTITY(1, 1) NOT NULL,
     "Price" INT NOT NULL,
     "Amount" INT NOT NULL,
-    "Date" DATETIME NOT NULL,
+    "Date" DATETIME,
 );
 ALTER TABLE
     "Sales" ADD CONSTRAINT "sales_id_primary" PRIMARY KEY("ID");
