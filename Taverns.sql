@@ -1,108 +1,175 @@
-
-DROP TABLE IF EXISTS [Tavern, Location, Users, Roles, BasementRats, Inventory, SupplyItem, Received, Service, Status, Sales];
-/*git test*/
-
-CREATE TABLE [Tavern] (
-	ID INT IDENTITY(1, 1),
-	Name varchar(250),
-	LocationID INT,
-	OwnerID INT,
-	NumberOfFloors INT
+/* TABLE CREATION */
+USE TavernsDatabase;
+DROP TABLE IF EXISTS "Status","TavernSupplies","TavernSupplyReceivedSales","TavernSuppliesReceived", "TavernServiceSales", "TavernServices", "Sales", "TavernUsers", "Taverns", "Users", BasementRats, "Locations", "Supply", "Services", "UserStatus","ServiceStatus", "UserClassLevel", "Class", "Roles";
+CREATE TABLE "Taverns"(
+    "id" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL,
+    "LocationID" INT NOT NULL,
+    "OwnerID" INT NOT NULL,
+    "NumberOfFloors" INT NOT NULL
 );
-INSERT INTO Taverns (Name,LocationID,OwnerID,NumberOfFloors)
-VALUES ("Tavern1",1,1,3),("Tavern2",2,2,4),("Tavern3",3,3,3),("Tavern4",4,4,4),("Tavern5",5,5,3);
-
-CREATE TABLE [Location] (
-	ID INT IDENTITY(1, 1),
-	Name varchar(250)
+ALTER TABLE
+    "Taverns" ADD CONSTRAINT "taverns_id_primary" PRIMARY KEY("id");
+CREATE TABLE "Locations"(
+    "id" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL
 );
-INSERT INTO Location (Name)
-VALUES ("Prague"),("Rothenburg"),("Mont Saint Michel"),("Siena"),("Carcassone");
-
-
-CREATE TABLE [Users] (
-	ID INT IDENTITY(1, 1),
-	Name varchar(250),
-	RoleID INT,
+ALTER TABLE
+    "Locations" ADD CONSTRAINT "locations_id_primary" PRIMARY KEY("id");
+CREATE TABLE "Users"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "RoleID" INT NOT NULL,
+    "UserStatusID" INT NOT NULL,
+    "UserClassLevelID" INT NOT NULL,
+    "Name" VARCHAR(255) NOT NULL,
+    "Birthdays" DATE NOT NULL,
+    "Cakedays" DATE NOT NULL,
+    "Notes" VARCHAR(255) NOT NULL
 );
-INSERT INTO Users (Name, RoleID)
-VALUES ("Matt", 1),("Rose" , 2),("Kevin", 3),("Matt", 4),("Joe", 5),("Rose" , 2);
-
-CREATE TABLE [Roles] (
-	ID TINYINT IDENTITY(1, 1),
-	Name varchar(250),
-	Description varchar(8000)
+ALTER TABLE
+    "Users" ADD CONSTRAINT "users_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "Roles"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL,
+    "Description" VARCHAR(255) NOT NULL
 );
-INSERT INTO Roles (Name, Description)
-VALUES ("Miller", "I do Miller stuff"),("StoneMason" , "I do StoneMason stuff"),("BlackSmith", "I do BlackSmith stuff"),("Armorer", "I do Armorer stuff"),("Falconer", "I do Falconer stuff");("TavernOwner", "I do TavernOwnver stuff");
-
-
-CREATE TABLE [BasementRats] (
-	ID INT IDENTITY(1, 1),
-	Name varchar(250)
+ALTER TABLE
+    "Roles" ADD CONSTRAINT "roles_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "UserStatus"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL
 );
-INSERT INTO BasementRats (Name)
-VALUES ("Remy"),("Templeton"),("Roddy"),("Remy"),("Roddy");
-
-
-
-CREATE TABLE [Inventory] (
-	ID INT IDENTITY(1, 1),
-	TavernID INT,
-	SupplyItemID INT,
-	Amount INT,
-	Date DATETIME  /*not sure if date will be automatically updated*/
+ALTER TABLE
+    "UserStatus" ADD CONSTRAINT "userstatus_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "Class"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR NOT NULL
 );
-INSERT INTO Inventory (TavernID,SupplyItemID,Amount)
-VALUES (1,1,3),(2,2,4),(3,3,3),(4,4,4),(5,5,3);
-
-
-CREATE TABLE [SupplyItem] (
-	ID INT IDENTITY(1, 1),
-	UnitOfMeasurement varchar(250),
-	Name varchar(250)
+ALTER TABLE
+    "Class" ADD CONSTRAINT "class_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "TavernSupplies"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "TavernID" INT NOT NULL,
+    "SupplyID" INT NOT NULL,
+    "Amount" INT NOT NULL,
+    "Date" DATETIME NOT NULL
 );
-INSERT INTO SupplyItem (UnitOfMeasurement, Name)
-VALUES ("Pounds", "Bread"),("Pounds" , "Meat"),("Ounces", "strong ale"),("Ounces", "Rum"),("Ounces", "Frost Mead"),("Pounds", "Apples");
-
-
-CREATE TABLE [Received] (
-	ID INT IDENTITY(1, 1),
-	TavernID INT,
-	SupplyItemID INT,
-	Cost INT,
-	Amount INT,
-	Date DATETIME
+ALTER TABLE
+    "TavernSupplies" ADD CONSTRAINT "tavernsupplies_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "TavernSuppliesReceived"(
+    "TavernID" INT NOT NULL,
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "SupplyID" INT NOT NULL,
+    "Cost" INT NOT NULL,
+    "Amount" INT NOT NULL,
+    "DateUpdated" DATETIME NOT NULL
 );
-INSERT INTO Received (TavernID,SupplyItemID,Cost,Amount)
-VALUES (1,1,5,3),(2,2,6,4),(3,3,5,3),(4,4,12,4),(5,5,9,3);
-
-
-CREATE TABLE [Service] (
-	ID INT IDENTITY(1, 1),
-	StatusID INT,
-	Name varchar(250)
+ALTER TABLE
+    "TavernSuppliesReceived" ADD CONSTRAINT "tavernsuppliesreceived_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "Supply"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "UnitOfMeasurement" VARCHAR(255) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL
 );
-INSERT INTO Service (Name, StatusID)
-VALUES ("Pool", 1),("Weapon sharpening" , 2),("Boot shining", 2),("Poker table", 1),("Darts", 5);
-
-
-CREATE TABLE [Status] (
-	ID INT IDENTITY(1, 1),
-	Name varchar(250),
+ALTER TABLE
+    "Supply" ADD CONSTRAINT "supply_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "TavernUsers"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "UserID" INT NOT NULL,
+    "TavernID" INT NOT NULL
 );
-INSERT INTO Status (Name)
-VALUES ("Active"),("Inactive"),("Stock"),("Discontinued"),("Reserved");
-
-
-CREATE TABLE [Sales] (
-	ID INT IDENTITY(1, 1),
-	TaverID INT,
-	ServicesID INT,
-	CustomerID INT,
-	Price INT,
-	Amount INT,
-	Date DATETIME
+ALTER TABLE
+    "TavernUsers" ADD CONSTRAINT "tavernusers_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "Sales"(
+    "TavernUserID" INT NOT NULL,
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Price" INT NOT NULL,
+    "Amount" INT NOT NULL,
+    "Date" DATETIME NOT NULL,
 );
-INSERT INTO Sales (TavernID,ServicesID,CustomerID, Price, Amount)
-VALUES (1,1,3,4,2),(2,2,4,12,3),(3,3,3,34,2),(4,4,4,12,6),(5,5,3,9,5);
+ALTER TABLE
+    "Sales" ADD CONSTRAINT "sales_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "Services"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    "Services" ADD CONSTRAINT "services_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "TavernServiceSales"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "SalesID" INT NOT NULL,
+    "TavernServiceID" INT NOT NULL
+);
+ALTER TABLE
+    "TavernServiceSales" ADD CONSTRAINT "tavernservicesales_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "TavernSupplyReceivedSales"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "SalesID" INT NOT NULL,
+    "TavernSupplyReceivedID" INT NOT NULL
+);
+ALTER TABLE
+    "TavernSupplyReceivedSales" ADD CONSTRAINT "tavernsupplyreceivedsales_id_primary" PRIMARY KEY("ID");
+
+CREATE TABLE "TavernServices"(
+    "TavernID" INT NOT NULL,
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "ServicesID" INT NOT NULL,
+    "ServiceStatusID" INT NOT NULL
+);
+ALTER TABLE
+    "TavernServices" ADD CONSTRAINT "tavernservices_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "ServiceStatus"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    "ServiceStatus" ADD CONSTRAINT "servicestatus_id_primary" PRIMARY KEY("ID");
+CREATE TABLE "UserClassLevel"(
+    "ID" INT IDENTITY(1, 1) NOT NULL,
+    "ClassID" INT NOT NULL,
+    "Level" INT NOT NULL
+);
+ALTER TABLE
+    "UserClassLevel" ADD CONSTRAINT "userclasslevel_id_primary" PRIMARY KEY("ID");
+
+
+
+/* ALTERING FOREIGN KEYS */
+ALTER TABLE
+    "Taverns" ADD CONSTRAINT "taverns_locationid_foreign" FOREIGN KEY("LocationID") REFERENCES "Locations"("id");
+ALTER TABLE
+    "TavernUsers" ADD CONSTRAINT "tavernusers_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
+ALTER TABLE
+    "TavernUsers" ADD CONSTRAINT "tavernusers_userid_foreign" FOREIGN KEY("UserID") REFERENCES "Users"("ID");
+ALTER TABLE
+    "Users" ADD CONSTRAINT "users_roleid_foreign" FOREIGN KEY("RoleID") REFERENCES "Roles"("ID");
+ALTER TABLE
+    "Users" ADD CONSTRAINT "users_userstatusid_foreign" FOREIGN KEY("UserStatusID") REFERENCES "UserStatus"("ID");
+ALTER TABLE
+    "Users" ADD CONSTRAINT "users_userclasslevelid_foreign" FOREIGN KEY("UserClassLevelID") REFERENCES "UserClassLevel"("ID");
+ALTER TABLE
+    "UserClassLevel" ADD CONSTRAINT "userclasslevel_classid_foreign" FOREIGN KEY("ClassID") REFERENCES "Class"("ID");
+ALTER TABLE
+    "TavernSuppliesReceived" ADD CONSTRAINT "tavernsuppliesreceived_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
+ALTER TABLE
+    "TavernSuppliesReceived" ADD CONSTRAINT "tavernsuppliesreceived_supplyid_foreign" FOREIGN KEY("SupplyID") REFERENCES "Supply"("ID");
+ALTER TABLE
+    "TavernSupplies" ADD CONSTRAINT "tavernsupplies_supplyid_foreign" FOREIGN KEY("SupplyID") REFERENCES "Supply"("ID");
+ALTER TABLE
+    "TavernSupplies" ADD CONSTRAINT "tavernsupplies_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
+ALTER TABLE
+    "TavernServiceSales" ADD CONSTRAINT "tavernservicesales_salesid_foreign" FOREIGN KEY("SalesID") REFERENCES "Sales"("ID");
+ALTER TABLE
+    "Sales" ADD CONSTRAINT "sales_tavernuserid_foreign" FOREIGN KEY("TavernUserID") REFERENCES "TavernUsers"("ID");
+ALTER TABLE
+    "TavernServices" ADD CONSTRAINT "tavernservices_servicesid_foreign" FOREIGN KEY("ServicesID") REFERENCES "Services"("ID");
+ALTER TABLE
+    "TavernServices" ADD CONSTRAINT "tavernservices_servicestatusid_foreign" FOREIGN KEY("ServiceStatusID") REFERENCES "ServiceStatus"("ID");
+ALTER TABLE
+    "TavernSupplyReceivedSales" ADD CONSTRAINT "tavernsupplyreceivedsales_salesid_foreign" FOREIGN KEY("SalesID") REFERENCES "Sales"("ID");
+ALTER TABLE
+    "TavernSupplyReceivedSales" ADD CONSTRAINT "tavernsupplyreceivedsales_tavernsupplyreceivedid_foreign" FOREIGN KEY("TavernSupplyReceivedID") REFERENCES "TavernSuppliesReceived"("ID");
+ALTER TABLE
+    "TavernServiceSales" ADD CONSTRAINT "tavernservicesales_tavernserviceid_foreign" FOREIGN KEY("TavernServiceID") REFERENCES "TavernServices"("ID");
+ALTER TABLE
+    "TavernServices" ADD CONSTRAINT "tavernservices_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
