@@ -1,6 +1,6 @@
 /* TABLE CREATION */
 USE TavernsDatabase;
-DROP TABLE IF EXISTS "Status","TavernSupplies","TavernSupplyReceivedSales","TavernSuppliesReceived", "TavernServiceSales", "TavernServices", "Sales", "TavernUsers", "Taverns", "Users", BasementRats, "Locations", "Supply", "Services", "UserStatus","ServiceStatus", "UserClassLevel", "Class", "Roles";
+DROP TABLE IF EXISTS "Status","TavernSupplies","TavernSupplyReceivedSales","TavernSuppliesReceived", "TavernServiceSales", "TavernServices","RoomStays","Sales", "TavernUsers", "TavernRooms","Taverns","Users", BasementRats, "Locations", "Supply", "Services", "UserStatus","ServiceStatus", "UserClassLevel", "Class", "Roles", "RoomStatus";
 CREATE TABLE "Taverns"(
     "id" INT IDENTITY(1, 1) NOT NULL,
     "Name" VARCHAR(255) NOT NULL,
@@ -16,6 +16,36 @@ CREATE TABLE "Locations"(
 );
 ALTER TABLE
     "Locations" ADD CONSTRAINT "locations_id_primary" PRIMARY KEY("id");
+
+CREATE TABLE "TavernRooms"(
+    "id" INT IDENTITY(1, 1) NOT NULL,
+    "TavernID" INT NOT NULL,
+    "RoomStatusID" INT NOT NULL,
+);
+ALTER TABLE
+    "TavernRooms" ADD CONSTRAINT "tavernrooms_id_primary" PRIMARY KEY("id");
+
+
+CREATE TABLE "RoomStatus"(
+    "id" INT IDENTITY(1, 1) NOT NULL,
+    "Status" VARCHAR(2000) NOT NULL,
+);
+ALTER TABLE
+    "RoomStatus" ADD CONSTRAINT "roomstatus_id_primary" PRIMARY KEY("id");
+
+CREATE TABLE "RoomStays"(
+    "id" INT IDENTITY(1, 1) NOT NULL,
+    "TavernRoomID" INT NOT NULL,
+    "SalesID" INT NOT NULL,
+	"TavernUsersID" INT NOT NULL,
+	"Date" DATE,
+	"Rate" INT,
+);
+ALTER TABLE
+    "RoomStays" ADD CONSTRAINT "roomstays_id_primary" PRIMARY KEY("id");
+
+
+
 CREATE TABLE "Users"(
     "ID" INT IDENTITY(1, 1) NOT NULL,
     "RoleID" INT NOT NULL,
@@ -173,3 +203,15 @@ ALTER TABLE
     "TavernServiceSales" ADD CONSTRAINT "tavernservicesales_tavernserviceid_foreign" FOREIGN KEY("TavernServiceID") REFERENCES "TavernServices"("ID");
 ALTER TABLE
     "TavernServices" ADD CONSTRAINT "tavernservices_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
+
+
+ALTER TABLE
+    "TavernRooms" ADD CONSTRAINT "tavernrooms_tavernid_foreign" FOREIGN KEY("TavernID") REFERENCES "Taverns"("id");
+ALTER TABLE
+    "TavernRooms" ADD CONSTRAINT "tavernrooms_roomstatusid_foreign" FOREIGN KEY("RoomStatusID") REFERENCES "RoomStatus"("id");
+ALTER TABLE
+    "RoomStays" ADD CONSTRAINT "roomstays_tavernroomid_foreign" FOREIGN KEY("TavernRoomID") REFERENCES "TavernRooms"("id");
+ALTER TABLE
+    "RoomStays" ADD CONSTRAINT "roomstays_salesid_foreign" FOREIGN KEY("SalesID") REFERENCES "Sales"("ID");
+ALTER TABLE
+    "RoomStays" ADD CONSTRAINT "roomstays_tavernusersid_foreign" FOREIGN KEY("TavernUsersID") REFERENCES "TavernUsers"("ID");
